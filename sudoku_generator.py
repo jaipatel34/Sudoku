@@ -45,7 +45,7 @@ class SudokuGenerator:
     '''
 
     def print_board(self):
-        pass
+        return self.board
 
     '''
 	Determines if num is contained in the specified row (horizontal) of the board
@@ -59,7 +59,7 @@ class SudokuGenerator:
     '''
 
     def valid_in_row(self, row, num):
-        if num == row[:]:
+        if num in row:
             return False
         else:
             return True
@@ -77,7 +77,7 @@ class SudokuGenerator:
     '''
 
     def valid_in_col(self, col, num):
-        if num == col[:]:
+        if num in col:
             return False
         else:
             return True
@@ -97,7 +97,11 @@ class SudokuGenerator:
     '''
 
     def valid_in_box(self, row_start, col_start, num):
-        pass
+        if num in (row_start, col_start) or num in (row_start+2, col_start+2) :
+            return False
+        else:
+            return True
+
 
     '''
     Determines if it is valid to enter num at (row, col) in the board
@@ -111,6 +115,10 @@ class SudokuGenerator:
     '''
 
     def is_valid(self, row, col, num):
+        if valid_in_row()==True and valid_in_col()==True and valid_in_box()==True
+            return True
+        else:
+            return False
         pass
 
     '''
