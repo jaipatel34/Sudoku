@@ -36,9 +36,6 @@ class SudokuGenerator:
     def get_board(self):
         return self.board
 
-
-
-
     '''
 	Displays the board to the console
     This is not strictly required, but it may be useful for debugging purposes
@@ -62,7 +59,11 @@ class SudokuGenerator:
     '''
 
     def valid_in_row(self, row, num):
-        pass
+        if num == row[:]:
+            return False
+        else:
+            return True
+
 
     '''
 	Determines if num is contained in the specified column (vertical) of the board
@@ -76,7 +77,11 @@ class SudokuGenerator:
     '''
 
     def valid_in_col(self, col, num):
-        pass
+        if num == col[:]:
+            return False
+        else:
+            return True
+
 
     '''
 	Determines if num is contained in the 3x3 box specified on the board
