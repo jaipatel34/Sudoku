@@ -1,4 +1,7 @@
+
+from sudoku_generator import SudokuGenerator
 import pygame
+
 
 WIDTH = 550
 background_color = (236, 231, 261)
@@ -23,6 +26,10 @@ def main():
                 pygame.quit()
 
 if __name__=="__main__":
-    main()
-
+    size = 9
+    removed = 5
+    sudoku = SudokuGenerator(size, removed)
+    sudoku.fill_values()
+    board = sudoku.get_board()
+    print(board)
 #JAI
