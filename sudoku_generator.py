@@ -122,7 +122,7 @@ class SudokuGenerator:
             return False
         for i in range(3):
             for j in range(3):
-                if num in self.board[row+i] or num in self.board[col+j]:
+                if (num in self.board[row+i]) or (num in self.board[col+j]):
                     return False
         return True
 
