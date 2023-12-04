@@ -139,8 +139,10 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
+        for i in range(3):
+            for j in range(3):
+                self.board[row_start + i][col_start + j] = digits.pop()
 
-        pass
 
     '''
     Fills the three boxes along the main diagonal of the board
