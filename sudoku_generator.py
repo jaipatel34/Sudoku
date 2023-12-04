@@ -2,7 +2,7 @@ import math, random
 
 
 class SudokuGenerator:
-
+    #this is the basic needs
     def __init__(self, row_length, removed_cells):
         self.row_length = row_length
         self.removed_cells = removed_cells
@@ -10,7 +10,7 @@ class SudokuGenerator:
         self.box_length = int(math.sqrt(row_length))
 
 
-
+# this returns board
     def get_board(self):
         return self.board
 
@@ -18,21 +18,21 @@ class SudokuGenerator:
     def print_board(self):
         pass
 
-
+#this makes sure the num in not in the row
     def valid_in_row(self, row, num):
         if num in self.board[row]:
             return False
         else:
             return True
 
-
+    # this makes sure the num in not in the col
     def valid_in_col(self, col, num):
         for row in range(self.row_length):
             if self.board[row][col] == num:
                 return False
         return True
 
-
+    # this makes sure the num in not in the box
     def valid_in_box(self, row_start, col_start, num):
 
         for r in range(3):
@@ -41,7 +41,7 @@ class SudokuGenerator:
                     return False
         return True
 
-
+    # this makes sure the num in not in row, col and box
     def is_valid(self, row, col, num):
         for i in range(9):
             if self.board[row][i] == num:
@@ -58,20 +58,19 @@ class SudokuGenerator:
                     return False
 
         return True
-
+#this fills the box
     def fill_box(self, row_start, col_start):
         digits = list(range(1, 10))
         for i in range(3):
             for j in range(3):
                 self.board[row_start + i][col_start + j] = digits.pop()
 
-
-
+    # this fills the box diagnolly
     def fill_diagonal(self):
         for box in range(0, self.row_length, self.box_length):
             self.fill_box(box, box)
 
-
+    # this fills the remaining cells
     def fill_remaining(self, row, col):
         if (col >= self.row_length and row < self.row_length - 1):
             row += 1
