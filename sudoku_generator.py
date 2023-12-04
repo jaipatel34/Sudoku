@@ -61,10 +61,7 @@ class SudokuGenerator:
         return True
 
     def fill_box(self, row_start, col_start):
-        digits = list(range(1, 10))
-        for i in range(3):
-            for j in range(3):
-                self.board[row_start + i][col_start + j] = digits.pop()
+
 
 
 
