@@ -14,7 +14,7 @@ class SudokuGenerator:
     def get_board(self):
         return self.board
 
-
+# not needed
     def print_board(self):
         pass
 
