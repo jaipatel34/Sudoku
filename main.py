@@ -1,35 +1,44 @@
-
-from sudoku_generator import SudokuGenerator
 import pygame
+from sudoku_generator import SudokuGenerator
 
+# Pygame initialization and window setup
+pygame.init()
+WIDTH = 540
+HEIGHT = 600
+WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Sudoku")
 
-WIDTH = 550
-background_color = (236, 231, 261)
+# Set up colors and fonts
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+FONT = pygame.font.SysFont("comicsansms", 40)
 
+# Sudoku board generation
+size = 9
+removed = 30  # Adjust the number of removed cells as needed
+sudoku = SudokuGenerator(size, removed)
+sudoku.fill_values()
+board = sudoku.get_board()
 
+# Main game loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-def main():
-    pygame.init()
-    win = pygame.display.set_mode((WIDTH, WIDTH))
-    pygame.display.set_caption('Sudoku')
-    #win.fill((236, 231, 261))
-    for i in range(0,10):
-        if i%3 == 0:
-            pygame.draw.line(win, (236,236,236), (50 + 50 * i,50), (50 + 50 * i,500), 4)
-            pygame.draw.line(win, (236,236,236), (50 , 50 + 50 * i), (500, 50 + 50 * i), 4)
-        pygame.draw.line(win, (236,236,236), (50 + 50 * i, 50), (50 + 50 * i, 500), 2)
-        pygame.draw.line(win, (236,236,236), (50, 50 + 50 * i), (500, 50 + 50 * i), 2)
+    # Fill the background
+    WINDOW.fill(WHITE)
+
+    # Draw the Sudoku grid and numbers
+    for i in range(9):
+        for j in range(9):
+            pygame.draw.rect(WINDOW, BLACK, (j * 60, i * 60, 60, 60), 1)  # Corrected x, y coordinates
+            if board[i][j] != 0:
+                text = FONT.render(str(board[i][j]), True, BLACK)
+                WINDOW.blit(text, (j * 60 + 20, i * 60 + 20))  # Corrected x, y coordinates
+
+    # Update the display
     pygame.display.update()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
 
-if __name__=="__main__":
-    size = 9
-    removed = 30
-    sudoku = SudokuGenerator(size, removed)
-    sudoku.fill_values()
-    board = sudoku.get_board()
-    print(board)
-#JAI
+pygame.quit()
