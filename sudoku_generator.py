@@ -19,7 +19,7 @@ class SudokuGenerator:
         pass
 
 
-    def valid_in_row(self, row, num): #good
+    def valid_in_row(self, row, num):
         if num in self.board[row]:
             return False
         else:
@@ -27,6 +27,7 @@ class SudokuGenerator:
 
 
     def valid_in_col(self, col, num):
+
         if num in self.board[col]:
             return False
         else:
@@ -100,13 +101,7 @@ class SudokuGenerator:
 
 
     def remove_cells(self):
-        cells_to_remove = self.removed_cells
-        while cells_to_remove > 0:
-            row = random.randint(0, self.row_length - 1)
-            col = random.randint(0, self.row_length - 1)
-            if self.board[row][col] != 0
-                self.board[row][col] = 0
-                cells_to_remove -= 1
+        pass
 
 
 def generate_sudoku(size, removed):

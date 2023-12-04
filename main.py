@@ -27,7 +27,7 @@ def main():
 
 if __name__=="__main__":
     size = 9
-    removed = 5
+    removed = 30
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
     board = sudoku.get_board()
