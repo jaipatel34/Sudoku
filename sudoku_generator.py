@@ -44,16 +44,23 @@ class SudokuGenerator:
 
 
     def is_valid(self, row, col, num):
-        if num in self.board[col]:
-            return False
-        elif num in self.board[row]:
-            return False
+        for i in range(9):
+            if board[row][i] == num:
+                return False
+
+        # Check column
+        for i in range(9):
+            if board[i][col] == num:
+                return False
+
+        # Check subgrid
+        start_row, start_col = 3 * (row // 3), 3 * (col // 3)
         for i in range(3):
             for j in range(3):
-                if (num in self.board[row+i]) or (num in self.board[col+j]):
+                if board[start_row + i][start_col + j] == num:
                     return False
-        return True
 
+        return True
 
     def fill_box(self, row_start, col_start):
         digits = list(range(1, 10))
@@ -117,7 +124,3 @@ def generate_sudoku(size, removed):
     board = sudoku.get_board()
     return board
 
-
-#jjjjj
-#abcdefg
-#jai
