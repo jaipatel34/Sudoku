@@ -34,8 +34,8 @@ if __name__=="__main__":
     main()'''
 
 import pygame
-import random
 from sudoku_generator import SudokuGenerator
+import random
 
 WIDTH = 550
 BACKGROUND_COLOR = (236, 231, 213)
