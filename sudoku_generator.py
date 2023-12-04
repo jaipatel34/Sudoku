@@ -63,7 +63,8 @@ class SudokuGenerator:
 
 
     def fill_diagonal(self):
-        pass
+        for box in range(0, self.row_length, self.box_length)
+            self.fill_box(box, box)
 
 
     def fill_remaining(self, row, col):
