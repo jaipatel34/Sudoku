@@ -1,4 +1,3 @@
-
 from sudoku_generator import SudokuGenerator
 import pygame
 
@@ -32,4 +31,3 @@ if __name__=="__main__":
     sudoku.fill_values()
     board = sudoku.get_board()
     print(board)
-#JAI
