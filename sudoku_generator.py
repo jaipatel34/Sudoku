@@ -122,9 +122,8 @@ class SudokuGenerator:
             return False
         for i in range(3):
             for j in range(3):
-                if num in self.board[row+i] and self.board[col+j]:#wrong
+                if num in self.board[row+i] or num in self.board[col+j]:
                     return False
-
         return True
 
 
@@ -140,6 +139,7 @@ class SudokuGenerator:
     '''
 
     def fill_box(self, row_start, col_start):
+
         pass
 
     '''
