@@ -5,7 +5,6 @@ import pygame'''
 from sudoku_generator import *
 import pygame
 import random
-import sys
 from sudoku_generator import SudokuGenerator, Board, Cell
 
 WIDTH = 600
