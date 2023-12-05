@@ -27,6 +27,9 @@ class SudokuGenerator:
         else:
             return True
 
+    def set_cell(self, row, col, value):
+        self.board[row][col] = value
+
     # this shows if num is in the col or not
     def valid_in_col(self, col, num):
         for row in range(self.row_length):
@@ -148,9 +151,6 @@ class Cell:
         elif self.sketched_value != 0:
             text = font.render(str(self.sketched_value), True, (128, 128, 128))
             self.screen.blit(text, (x + 5, y + 5))
-
-        def set_cell(self, row, col, value):
-            self.board[row][col] = value
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
