@@ -14,6 +14,8 @@ class SudokuGenerator:
     def get_board(self):
         return self.board
 
+
+
 # not needed
     def print_board(self):
         pass
@@ -113,26 +115,83 @@ class SudokuGenerator:
                 self.board[row][col] = 0
                 cells_to_remove -= 1
 
-    def set_cell(self, row, col, value):
-        self.board[row][col] = value
+
+class Cell:
+    def __init__(self, value, row, col, screen):
+        self.value = value
+        self.sketched_value = 0
+        self.row = row
+        self.col = col
+        self.screen = screen
+
+    def set_cell_value(self, value):
+        self.value = value
+
+    def set_sketched_value(self, value):
+        self.sketched_value = value
+
+    def draw(self, selected=False):
+        cell_size = 50
+        font = pygame.font.Font(None, 36)
+
+        x = self.col * cell_size
+        y = self.row * cell_size
+
+        pygame.draw.rect(self.screen, (255, 255, 255), (x, y, cell_size, cell_size))
+
+        if selected:
+            pygame.draw.rect(self.screen, (255, 0, 0), (x, y, cell_size, cell_size), 3)
+
+        if self.value != 0:
+            text = font.render(str(self.value), True, (0, 0, 0))
+            self.screen.blit(text, (x + 15, y + 15))
+        elif self.sketched_value != 0:
+            text = font.render(str(self.sketched_value), True, (128, 128, 128))
+            self.screen.blit(text, (x + 5, y + 5))
+
+class Board:
+    def __init__(self, width, height, screen, difficulty):
+        self.width = width
+        self.height = height
+        self.screen = screen
+        self.difficulty = difficulty
+        self.cells = [[Cell(0, i, j, screen) for j in range(width)] for i in range(height)]
+        self.selected_cell = None
+
+    def draw(self):
+        cell_size = 50
+        for i in range(self.height + 1):
+            pygame.draw.line(self.screen, (0, 0, 0), (0, i * cell_size), (self.width * cell_size, i * cell_size), 2)
+        for j in range(self.width + 1):
+            pygame.draw.line(self.screen, (0, 0, 0), (j * cell_size, 0), (j * cell_size, self.height * cell_size), 2)
+
+        for i in range(0, self.height, 3):
+            for j in range(0, self.width, 3):
+                pygame.draw.rect(self.screen, (0, 0, 0), (j * cell_size, i * cell_size, 3 * cell_size, 3 * cell_size), 3)
+
+        for row in self.cells:
+            for cell in row:
+                cell.draw(selected=(cell == self.selected_cell))
 
     def is_complete(self):
-        """Check if the Sudoku grid is complete."""
         for row in self.board:
             if 0 in row:
-                return False  # If any row has an empty cell, the grid is not complete
-
-        for col in range(len(self.board[0])):
-            if 0 in [row[col] for row in self.board]:
-                return False  # If any column has an empty cell, the grid is not complete
-
-        for i in range(0, len(self.board), 3):
-            for j in range(0, len(self.board[0]), 3):
-                if 0 in [self.board[x][y] for x in range(i, i + 3) for y in range(j, j + 3)]:
-                    return False  # If any 3x3 block has an empty cell, the grid is not complete
-
+                return False
         return True
 
+    def check_board(self):
+        # Check rows and columns
+        for i in range(self.row_length):
+            if not self.check_row(i) or not self.check_col(i):
+                return False
+
+        # Check boxes
+        for row in range(0, self.row_length, self.box_length):
+            for col in range(0, self.row_length, self.box_length):
+                if not self.check_box(row, col):
+                    return False
+
+        return True
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
@@ -140,4 +199,7 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
+
+'''def set_cell(self, row, col, value):
+        self.board[row][col] = value'''
 

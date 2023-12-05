@@ -1,42 +1,12 @@
 '''from sudoku_generator import SudokuGenerator
+import pygame'''
+
+
+from sudoku_generator import *
 import pygame
-
-
-WIDTH = 550
-background_color = (255, 255, 255)
-
-
-
-def main():
-    pygame.init()
-    win = pygame.display.set_mode((WIDTH, WIDTH))
-    pygame.display.set_caption('Sudoku')
-    #win.fill((236, 231, 261))
-    for i in range(0,10):
-        if i%3 == 0:
-            pygame.draw.line(win, (236,236,236), (50 + 50 * i,50), (50 + 50 * i,500), 4)
-            pygame.draw.line(win, (236,236,236), (50 , 50 + 50 * i), (500, 50 + 50 * i), 4)
-        pygame.draw.line(win, (236,236,236), (50 + 50 * i, 50), (50 + 50 * i, 500), 2)
-        pygame.draw.line(win, (236,236,236), (50, 50 + 50 * i), (500, 50 + 50 * i), 2)
-    pygame.display.update()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-
-if __name__=="__main__":
-    size = 9
-    removed = 80
-    sudoku = SudokuGenerator(size, removed)
-    sudoku.fill_values()
-    board = sudoku.get_board()
-    print(board)
-    main()'''
-
-
-
-import pygame
-from sudoku_generator import SudokuGenerator
+import random
+import sys
+from sudoku_generator import SudokuGenerator, Board, Cell
 
 WIDTH = 600
 BACKGROUND_COLOR = (236, 231, 213)
@@ -80,9 +50,6 @@ def draw_grid(win, sudoku, selected):
         pygame.draw.line(win, GRID_COLOR, (68 + 50 * i, 67), (68 + 50 * i, 517), line_thickness)
         pygame.draw.line(win, GRID_COLOR, (68, (50 + 50 * i)+17), (518, (50 + 50 * i)+17), line_thickness)
 
-
-
-
 def draw_buttons(win, buttons):
     button_font = pygame.font.Font(None, 36)
 
@@ -117,86 +84,10 @@ def main():
     selected_difficulty = None
     selected_cell = None
 
-    # ... (previous code)
 
     selected_number = None
     game_over = False
-
-    run = True
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            elif event.type == pygame.MOUSEBUTTONDOWN and not game_over:
-                pos = pygame.mouse.get_pos()
-                if selected_difficulty:
-                    if 50 <= pos[0] <= 500 and 50 <= pos[1] <= 500:
-                        row = (pos[1] - 50) // 50
-                        col = (pos[0] - 50) // 50
-                        selected_cell = (row, col)
-                        if event.button == 1:  # Left mouse button
-                            if selected_number is not None:
-                                sudoku.set_cell(row, col, selected_number)
-                                print(f"Setting cell ({row}, {col}) to {selected_number}")
-                                print("Current state of the board:")
-                                print(sudoku.get_board())
-
-                for button in game_screen_buttons:
-                    if button.rect.collidepoint(pos):
-                        if button.action == "reset":
-                            print("Reset clicked")
-                            # Add logic to reset the game state
-                            sudoku.reset_board()
-                            game_over = False
-                        elif button.action == "restart":
-                            print("Restart clicked")
-                            # Add logic to restart the game
-                            sudoku.fill_values()
-                            game_over = False
-                        elif button.action == "exit":
-                            run = False
-                for button in start_screen_buttons:
-                    if button.rect.collidepoint(pos):
-                        selected_difficulty = button.text
-                        size = 9
-                        removed = 30  # Default to easy difficulty
-                        if selected_difficulty == "Medium":
-                            removed = 40
-                        elif selected_difficulty == "Hard":
-                            removed = 50
-                        sudoku = SudokuGenerator(size, removed)
-                        sudoku.fill_values()
-                        sudoku.remove_cells()
-                        selected_cell = None
-                        selected_number = None
-                        game_over = False
-                        print("New game started. Initial state of the board:")
-                        print(sudoku.get_board())
-
-        if selected_difficulty:
-            win.fill(BACKGROUND_COLOR)
-            draw_title(win)
-            draw_grid(win, sudoku, selected_cell)
-            draw_buttons(win, game_screen_buttons)
-
-            if sudoku.is_complete():  # Add a method like is_complete() in your SudokuGenerator class
-                print("Congratulations! You won!")
-                game_over = True
-
-        else:
-            win.fill(BACKGROUND_COLOR)
-            draw_title(win)
-            draw_buttons(win, start_screen_buttons)
-
-        pygame.display.update()
-
-    pygame.quit()
-if __name__ == "__main__":
-    main()
-
-
-'''
-    run = True
+    run= True
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -242,8 +133,6 @@ if __name__ == "__main__":
 
     pygame.quit()
 
+
 if __name__ == "__main__":
-    main()'''
-
-#lol
-
+    main()
