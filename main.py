@@ -75,7 +75,12 @@ def draw_title(win):
     win.blit(title_text, title_position)
     win.blit(title_text2, title_position2)
 
+# ... (previous code)
+
+# ... (previous code)
+
 def main():
+
     global selected_difficulty, selected_cell, selected_number, game_over, sudoku
     pygame.init()
     win = pygame.display.set_mode((WIDTH, WIDTH))
@@ -103,6 +108,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == K_1:
+                    sudoku[0][0] = 1
+                    #pass in 1 as a selected value
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if not selected_difficulty:  # Check if a difficulty is not selected
@@ -148,6 +158,7 @@ def main():
     pygame.quit()
 if __name__ == "__main__":
     main()
+
 
 
 
