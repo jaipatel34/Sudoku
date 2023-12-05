@@ -113,6 +113,26 @@ class SudokuGenerator:
                 self.board[row][col] = 0
                 cells_to_remove -= 1
 
+    def set_cell(self, row, col, value):
+        self.board[row][col] = value
+
+    def is_complete(self):
+        """Check if the Sudoku grid is complete."""
+        for row in self.board:
+            if 0 in row:
+                return False  # If any row has an empty cell, the grid is not complete
+
+        for col in range(len(self.board[0])):
+            if 0 in [row[col] for row in self.board]:
+                return False  # If any column has an empty cell, the grid is not complete
+
+        for i in range(0, len(self.board), 3):
+            for j in range(0, len(self.board[0]), 3):
+                if 0 in [self.board[x][y] for x in range(i, i + 3) for y in range(j, j + 3)]:
+                    return False  # If any 3x3 block has an empty cell, the grid is not complete
+
+        return True
+
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
