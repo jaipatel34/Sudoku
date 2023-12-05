@@ -38,7 +38,7 @@ if __name__=="__main__":
 import pygame
 from sudoku_generator import SudokuGenerator
 
-WIDTH = 550
+WIDTH = 600
 BACKGROUND_COLOR = (236, 231, 213)
 GRID_COLOR = (0, 0, 0)
 SELECTED_COLOR = (255, 0, 0)
@@ -61,12 +61,6 @@ class GameButton:
 
 def draw_grid(win, sudoku, selected):
     win.fill(BACKGROUND_COLOR)
-
-    for i in range(0, 10):
-        line_thickness = 4 if i % 3 == 0 else 2
-        pygame.draw.line(win, GRID_COLOR, (50 + 50 * i, 50), (50 + 50 * i, 500), line_thickness)
-        pygame.draw.line(win, GRID_COLOR, (50, 50 + 50 * i), (500, 50 + 50 * i), line_thickness)
-
     font = pygame.font.Font(None, 36)
     for i in range(9):
         for j in range(9):
@@ -79,6 +73,12 @@ def draw_grid(win, sudoku, selected):
                 text = font.render(str(cell_value), True, FONT_COLOR)
                 text_rect = text.get_rect(center=(x + 25, y + 25))  # Center the text within the cell
                 win.blit(text, text_rect.topleft)
+
+    for i in range(0, 10):
+        line_thickness = 4 if i % 3 == 0 else 2
+        pygame.draw.line(win, GRID_COLOR, (68 + 50 * i, 65), (68 + 50 * i, 515), line_thickness)
+        pygame.draw.line(win, GRID_COLOR, (68, (50 + 50 * i)+15), (518, (50 + 50 * i)+15), line_thickness)
+
 
 def draw_buttons(win, buttons):
     button_font = pygame.font.Font(None, 36)
