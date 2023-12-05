@@ -149,6 +149,9 @@ class Cell:
             text = font.render(str(self.sketched_value), True, (128, 128, 128))
             self.screen.blit(text, (x + 5, y + 5))
 
+        def set_cell(self, row, col, value):
+            self.board[row][col] = value
+
 class Board:
     def __init__(self, width, height, screen, difficulty):
         self.width = width
@@ -200,6 +203,4 @@ def generate_sudoku(size, removed):
     board = sudoku.get_board()
     return board
 
-'''def set_cell(self, row, col, value):
-        self.board[row][col] = value'''
 
