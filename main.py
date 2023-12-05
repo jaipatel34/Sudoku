@@ -67,9 +67,13 @@ def draw_buttons(win, buttons):
 
 def draw_title(win):
     title_font = pygame.font.Font(None, 48)
-    title_text = title_font.render("Start Game", True, FONT_COLOR)
+    title_text = title_font.render("Sudoku", True, FONT_COLOR)
+    title_text2 = title_font.render("Start Game", True, FONT_COLOR)
     title_position = ((WIDTH - title_text.get_width()) // 2, 50)
+    title_position2 = ((WIDTH - title_text2.get_width()) // 2, title_position[1] + title_text.get_height() + 10)  # Adjusted vertical position
+
     win.blit(title_text, title_position)
+    win.blit(title_text2, title_position2)
 
 def main():
     global selected_difficulty, selected_cell, selected_number, game_over, sudoku
