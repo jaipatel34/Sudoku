@@ -1,9 +1,8 @@
-
-
+from sudoku_generator import SudokuGenerator, Board, Cell
 from sudoku_generator import *
 import pygame
 import random
-from sudoku_generator import SudokuGenerator, Board, Cell
+import math
 
 WIDTH = 600
 BACKGROUND_COLOR = (236, 231, 213)
@@ -47,6 +46,17 @@ def draw_grid(win, sudoku, selected):
         pygame.draw.line(win, GRID_COLOR, (68 + 50 * i, 67), (68 + 50 * i, 517), line_thickness)
         pygame.draw.line(win, GRID_COLOR, (68, (50 + 50 * i)+17), (518, (50 + 50 * i)+17), line_thickness)
 
+def restart_game():
+    global selected_difficulty, selected_cell, selected_number, game_over, sudoku
+    selected_difficulty = None
+    selected_cell = None
+    selected_number = None
+    game_over = False
+    size = 9
+    removed = 30
+    sudoku = SudokuGenerator(size, removed)
+    sudoku.fill_values()
+    sudoku.remove_cells()
 def draw_buttons(win, buttons):
     button_font = pygame.font.Font(None, 36)
 
@@ -62,6 +72,7 @@ def draw_title(win):
     win.blit(title_text, title_position)
 
 def main():
+    global selected_difficulty, selected_cell, selected_number, game_over, sudoku
     pygame.init()
     win = pygame.display.set_mode((WIDTH, WIDTH))
     pygame.display.set_caption('Sudoku')
@@ -80,32 +91,22 @@ def main():
 
     selected_difficulty = None
     selected_cell = None
-
-
     selected_number = None
     game_over = False
-    run= True
+
+    run = True
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
-                if selected_difficulty:
-                    for button in game_screen_buttons:
-                        if button.rect.collidepoint(pos):
-                            if button.action == "reset":
-                                print("Reset clicked")
-                            elif button.action == "restart":
-                                print("Restart clicked")
-                            elif button.action == "exit":
-                                run = False
-                else:
+                if not selected_difficulty:  # Check if a difficulty is not selected
                     for button in start_screen_buttons:
                         if button.rect.collidepoint(pos):
                             selected_difficulty = button.text
                             size = 9
-                            removed = 30  # Default to easy difficulty
+                            removed = 30
                             if selected_difficulty == "Medium":
                                 removed = 40
                             elif selected_difficulty == "Hard":
@@ -113,6 +114,18 @@ def main():
                             sudoku = SudokuGenerator(size, removed)
                             sudoku.fill_values()
                             sudoku.remove_cells()
+                else:
+                    for button in game_screen_buttons:
+                        if button.rect.collidepoint(pos):
+                            if button.action == "reset":
+                                print("Reset clicked")
+                            elif button.action == "restart":
+                                selected_difficulty = None
+                                selected_cell = None
+                                sudoku = None
+                            elif button.action == "exit":
+                                run = False
+
                 if selected_difficulty:
                     selected_cell = ((pos[1] - 50) // 50, (pos[0] - 50) // 50)
 
@@ -129,7 +142,8 @@ def main():
         pygame.display.update()
 
     pygame.quit()
-
-
 if __name__ == "__main__":
     main()
+
+
+
