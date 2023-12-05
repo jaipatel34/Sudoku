@@ -109,9 +109,22 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == K_1:
-                    sudoku[0][0] = 1
-                    #pass in 1 as a selected value
+                if selected_difficulty and selected_cell is not None:
+                    if pygame.K_1 <= event.key <= pygame.K_9:
+                        selected_number = event.key - pygame.K_0  # Convert key code to actual number
+                        sudoku.set_cell(selected_cell[0], selected_cell[1], selected_number)
+                        print(f"Setting cell {selected_cell} to {selected_number}")
+                        print("Current state of the board:")
+                        print(sudoku.get_board())
+                    elif event.key == pygame.K_UP and selected_cell[0] > 0:
+                        selected_cell = (selected_cell[0] - 1, selected_cell[1])
+                    elif event.key == pygame.K_DOWN and selected_cell[0] < 8:
+                        selected_cell = (selected_cell[0] + 1, selected_cell[1])
+                    elif event.key == pygame.K_LEFT and selected_cell[1] > 0:
+                        selected_cell = (selected_cell[0], selected_cell[1] - 1)
+                    elif event.key == pygame.K_RIGHT and selected_cell[1] < 8:
+                        selected_cell = (selected_cell[0], selected_cell[1] + 1)
+
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
@@ -158,7 +171,3 @@ def main():
     pygame.quit()
 if __name__ == "__main__":
     main()
-
-
-
-
