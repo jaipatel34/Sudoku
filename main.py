@@ -75,9 +75,6 @@ def draw_title(win):
     win.blit(title_text, title_position)
     win.blit(title_text2, title_position2)
 
-# ... (previous code)
-
-# ... (previous code)
 
 def main():
 
