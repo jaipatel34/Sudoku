@@ -25,9 +25,10 @@ class GameButton:
         self.text_position = text_position
         self.action = action
 
-def draw_grid(win, sudoku, selected):
+def draw_grid(win, sudoku, selected, sketch_mode, selected_number):
     win.fill(BACKGROUND_COLOR)
     font = pygame.font.Font(None, 36)
+    sketch_font = pygame.font.Font(None, 20)
 
     for i in range(9):
         for j in range(9):
@@ -37,14 +38,18 @@ def draw_grid(win, sudoku, selected):
 
             cell_value = sudoku.get_board()[i][j]
             if cell_value != 0:
-                text = font.render(str(cell_value), True, FONT_COLOR)
+                if sketch_mode and selected == (i, j):
+                    # Display sketch number in a smaller and greyed out font
+                    text = sketch_font.render(str(cell_value), True, (128, 128, 128))
+                else:
+                    text = font.render(str(cell_value), True, FONT_COLOR)
                 text_rect = text.get_rect(center=(x + 25, y + 25))  # Center the text within the cell
                 win.blit(text, text_rect.topleft)
 
     for i in range(0, 10):
         line_thickness = 4 if i % 3 == 0 else 2
         pygame.draw.line(win, GRID_COLOR, (68 + 50 * i, 67), (68 + 50 * i, 517), line_thickness)
-        pygame.draw.line(win, GRID_COLOR, (68, (50 + 50 * i)+17), (518, (50 + 50 * i)+17), line_thickness)
+        pygame.draw.line(win, GRID_COLOR, (68, (50 + 50 * i) + 17), (518, (50 + 50 * i) + 17), line_thickness)
 
 def restart_game():
     global selected_difficulty, selected_cell, selected_number, game_over, sudoku
@@ -191,7 +196,7 @@ def main():
         if selected_difficulty:
             win.fill(BACKGROUND_COLOR)
             draw_title(win)  # Draw the title
-            draw_grid(win, sudoku, selected_cell)
+            draw_grid(win, sudoku, selected_cell, sketch_mode, selected_number)
             draw_buttons(win, game_screen_buttons)
         else:
             win.fill(BACKGROUND_COLOR)
@@ -204,6 +209,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-#jai
