@@ -102,6 +102,10 @@ def main():
     selected_cell = None
     selected_number = None
     game_over = False
+    initial_board = None
+
+    sketch_mode = False
+    sketch_mode_activated = False
 
     run = True
     while run:
@@ -110,13 +114,25 @@ def main():
                 run = False
             elif event.type == pygame.KEYDOWN:
                 if selected_difficulty and selected_cell is not None:
+                    sketch_mode = True
                     if pygame.K_1 <= event.key <= pygame.K_9:
                         selected_number = event.key - pygame.K_0  # Convert key code to actual number
-                        if sudoku.get_board()[selected_cell[0]][selected_cell[1]] == 0:
-                            sudoku.set_cell(selected_cell[0], selected_cell[1], selected_number)
-                            print(f"Setting cell {selected_cell} to {selected_number}")
+                        cell_value = sudoku.get_board()[selected_cell[0]][selected_cell[1]]
+
+                        if (sketch_mode or cell_value == 0) and not initial_board[selected_cell[0]][selected_cell[1]]:
+                            # If in sketch mode or the cell is empty and not initially filled, set the sketched value
+                            sudoku.get_board()[selected_cell[0]][selected_cell[1]] = selected_number
+                            print(f"Setting cell {selected_cell} to {selected_number} (Sketch mode: {sketch_mode})")
                             print("Current state of the board:")
                             print(sudoku.get_board())
+                    elif event.key == pygame.K_RETURN:
+                        # Submit the guess if the return (enter) key is pressed
+                        cell_value = sudoku.get_board()[selected_cell[0]][selected_cell[1]]
+                        if sketch_mode and cell_value != 0 and not initial_board[selected_cell[0]][selected_cell[1]]:
+                            print(f"Submitting guess for cell {selected_cell}")
+                            print("Current state of the board:")
+                            print(sudoku.get_board())
+                            sketch_mode = False  # Exit sketch mode after submitting the guess
                     elif event.key == pygame.K_UP and selected_cell[0] > 0:
                         selected_cell = (selected_cell[0] - 1, selected_cell[1])
                     elif event.key == pygame.K_DOWN and selected_cell[0] < 8:
@@ -125,7 +141,20 @@ def main():
                         selected_cell = (selected_cell[0], selected_cell[1] - 1)
                     elif event.key == pygame.K_RIGHT and selected_cell[1] < 8:
                         selected_cell = (selected_cell[0], selected_cell[1] + 1)
+                    elif sketch_mode and pygame.K_1 <= event.key <= pygame.K_9:
+                        # If in sketch mode and a number key is pressed, update sketched value using arrow keys
+                        selected_number = event.key - pygame.K_0
+                        cell_value = sudoku.get_board()[selected_cell[0]][selected_cell[1]]
+                        if not initial_board[selected_cell[0]][selected_cell[1]]:
+                            # Update sketched value only if the cell is not initially filled
+                            sudoku.get_board()[selected_cell[0]][selected_cell[1]] = selected_number
+                            print(f"Setting cell {selected_cell} to {selected_number} (Sketch mode: {sketch_mode})")
+                            print("Current state of the board:")
+                            print(sudoku.get_board())
 
+                # Check if the selected cell is empty before entering sketch mode
+                if sketch_mode and sudoku.get_board()[selected_cell[0]][selected_cell[1]] == 0:
+                    print(f"Entering sketch mode for cell {selected_cell}")
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
@@ -142,20 +171,25 @@ def main():
                             sudoku = SudokuGenerator(size, removed)
                             sudoku.fill_values()
                             sudoku.remove_cells()
+                            # Save the initial state of the board
+                            initial_board = [[cell != 0 for cell in row] for row in sudoku.get_board()]
                 else:
                     for button in game_screen_buttons:
                         if button.rect.collidepoint(pos):
                             if button.action == "reset":
                                 print("Reset clicked")
+                                sketch_mode = False  # Exit sketch mode when resetting
                             elif button.action == "restart":
                                 selected_difficulty = None
                                 selected_cell = None
                                 sudoku = None
+                                sketch_mode = False  # Exit sketch mode when restarting
                             elif button.action == "exit":
                                 run = False
 
                 if selected_difficulty:
                     selected_cell = ((pos[1] - 50) // 50, (pos[0] - 50) // 50)
+                    sketch_mode = True
 
         if selected_difficulty:
             win.fill(BACKGROUND_COLOR)
@@ -170,5 +204,6 @@ def main():
         pygame.display.update()
 
     pygame.quit()
+
 if __name__ == "__main__":
     main()
