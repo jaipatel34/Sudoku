@@ -147,15 +147,20 @@ class Cell:
         elif self.sketched_value != 0:
             text = font.render(str(self.sketched_value), True, (128, 128, 128))
             self.screen.blit(text, (x + 5, y + 5))
+    # def sketch(self, value):
+    #     for row in range(self.board_row):
 
 class Board:
-    def __init__(self, width, height, screen, difficulty):
+    def __init__(self, width, height, screen, difficulty, sudoku_board):
         self.width = width
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
         self.cells = [[Cell(0, i, j, screen) for j in range(width)] for i in range(height)]
         self.selected_cell = None
+        # self.board = sudoku_board
+        # self.board_row = len(self.board)
+        # self.board_col =
 
     def draw(self):
         cell_size = 50

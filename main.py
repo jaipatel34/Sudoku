@@ -62,6 +62,17 @@ def restart_game():
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
     sudoku.remove_cells()
+
+initial_board = None
+def reset_game():
+    global sudoku, initial_board
+
+    if initial_board and sudoku:
+        for i in range(9):
+            for j in range(9):
+                if not initial_board[i][j]:  # Check if the cell was modified (not part of the initial board)
+                    sudoku.board[i][j] = 0
+
 def draw_buttons(win, buttons):
     button_font = pygame.font.Font(None, 36)
 
@@ -83,7 +94,7 @@ def draw_title(win):
 
 def main():
 
-    global selected_difficulty, selected_cell, selected_number, game_over, sudoku
+    global selected_difficulty, selected_cell, selected_number, game_over, sudoku, initial_board
     pygame.init()
     win = pygame.display.set_mode((WIDTH, WIDTH))
     pygame.display.set_caption('Sudoku')
@@ -181,6 +192,7 @@ def main():
                             if button.action == "reset":
                                 print("Reset clicked")
                                 sketch_mode = False # Exit sketch mode when resetting
+                                reset_game()
                             elif button.action == "restart":
                                 selected_difficulty = None
                                 selected_cell = None
