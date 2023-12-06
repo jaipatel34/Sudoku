@@ -1,5 +1,4 @@
-import math, random
-
+import math, random, pygame
 
 class SudokuGenerator:
     # this is the main info needed
@@ -8,7 +7,6 @@ class SudokuGenerator:
         self.removed_cells = removed_cells
         self.board = [[0 for _ in range(row_length)] for _ in range(row_length)]
         self.box_length = int(math.sqrt(row_length))
-
 
 #this returns the board
     def get_board(self):
@@ -202,5 +200,3 @@ def generate_sudoku(size, removed):
     sudoku.remove_cells()
     board = sudoku.get_board()
     return board
-
-
