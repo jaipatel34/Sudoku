@@ -5,7 +5,7 @@ import random
 import math
 
 WIDTH = 600
-BACKGROUND_COLOR = (236, 231, 213)
+BACKGROUND_COLOR = (255, 255, 255)
 GRID_COLOR = (0, 0, 0)
 SELECTED_COLOR = (255, 0, 0)
 FONT_COLOR = (0, 0, 0)
@@ -67,8 +67,8 @@ def draw_buttons(win, buttons):
 
 def draw_title(win):
     title_font = pygame.font.Font(None, 48)
-    title_text = title_font.render("Sudoku", True, FONT_COLOR)
-    title_text2 = title_font.render("Start Game", True, FONT_COLOR)
+    title_text = title_font.render("Welcome to Sudoku", True, FONT_COLOR)
+    title_text2 = title_font.render("Select Game Mode", True, FONT_COLOR)
     title_position = ((WIDTH - title_text.get_width()) // 2, 50)
     title_position2 = ((WIDTH - title_text2.get_width()) // 2, title_position[1] + title_text.get_height() + 10)  # Adjusted vertical position
 
@@ -84,15 +84,15 @@ def main():
     pygame.display.set_caption('Sudoku')
 
     start_screen_buttons = [
-        DifficultyButton("Easy", pygame.Rect(200, 200, 150, 50), (0, 255, 0), (220, 215)),
-        DifficultyButton("Medium", pygame.Rect(200, 300, 150, 50), (255, 255, 0), (205, 315)),
-        DifficultyButton("Hard", pygame.Rect(200, 400, 150, 50), (255, 0, 0), (225, 415)),
+        DifficultyButton("Easy", pygame.Rect(200, 200, 150, 50), (0,100,255), (220, 215)),
+        DifficultyButton("Medium", pygame.Rect(200, 300, 150, 50), (0,100,255), (205, 315)),
+        DifficultyButton("Hard", pygame.Rect(200, 400, 150, 50), (0,100,255), (225, 415)),
     ]
 
     game_screen_buttons = [
-        GameButton("Reset", pygame.Rect(50, 520, 100, 30), (0, 0, 255), (70, 525), "reset"),
-        GameButton("Restart", pygame.Rect(180, 520, 100, 30), (255, 165, 0), (185, 525), "restart"),
-        GameButton("Exit", pygame.Rect(310, 520, 100, 30), (255, 0, 0), (330, 525), "exit"),
+        GameButton("Reset", pygame.Rect(50, 520, 100, 30), (0,100,255), (70, 525), "reset"),
+        GameButton("Restart", pygame.Rect(180, 520, 100, 30), (0,100,255), (185, 525), "restart"),
+        GameButton("Exit", pygame.Rect(310, 520, 100, 30), (0,100,255), (330, 525), "exit"),
     ]
 
     selected_difficulty = None
@@ -175,7 +175,7 @@ def main():
                         if button.rect.collidepoint(pos):
                             if button.action == "reset":
                                 print("Reset clicked")
-                                sketch_mode = False  # Exit sketch mode when resetting
+                                sketch_mode = False # Exit sketch mode when resetting
                             elif button.action == "restart":
                                 selected_difficulty = None
                                 selected_cell = None
