@@ -253,7 +253,7 @@ def main():
                         if button.rect.collidepoint(pos):
                             selected_difficulty = button.text
                             size = 9
-                            removed = 1
+                            removed = 30
                             if selected_difficulty == "Medium":
                                 removed = 40
                             elif selected_difficulty == "Hard":
