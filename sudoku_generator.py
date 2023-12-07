@@ -258,21 +258,6 @@ class Board:
             row, col = self.selected_cell
             self.board[row][col] = value
 
-    def reset_to_original(self):
-
-        original_values = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
-                           [6, 0, 0, 1, 9, 5, 0, 0, 0],
-                           [0, 9, 8, 0, 0, 0, 0, 6, 0],
-                           [8, 0, 0, 0, 6, 0, 0, 0, 3],
-                           [4, 0, 0, 8, 0, 3, 0, 0, 1],
-                           [7, 0, 0, 0, 2, 0, 0, 0, 6],
-                           [0, 6, 0, 0, 0, 0, 2, 8, 0],
-                           [0, 0, 0, 4, 1, 9, 0, 0, 5],
-                           [0, 0, 0, 0, 8, 0, 0, 7, 9]]
-
-        self.board = [row[:] for row in original_values]
-        return self.board
-
 
     def is_full(self):
         # Check rows
@@ -283,7 +268,6 @@ class Board:
         return True
 
     def update_board(self):
-        # Not sure what the update would be in this case, but you can define it
         pass
 
     def find_empty(self):
