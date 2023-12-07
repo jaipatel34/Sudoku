@@ -177,9 +177,10 @@ class Board:
                 cell.draw(selected=(cell == self.selected_cell))
 
     def is_complete(self):
-        for row in self.board:
-            if 0 in row:
-                return False
+        for row in range(self.board_rows):
+            for col in range(self.board_cols):
+                if self.cells[col][row] == 0:
+                    return False
         return True
 
     def check_board(self):

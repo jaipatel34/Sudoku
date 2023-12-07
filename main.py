@@ -285,7 +285,6 @@ def main():
 
         if selected_difficulty:
             win.fill(BACKGROUND_COLOR)
-            #sudoku.get_board()
             if event.type==pygame.KEYDOWN:
                 if board_instance.is_full() and event.key==pygame.K_RETURN:
                     game_won_screen()
