@@ -150,12 +150,12 @@ class Cell:
 
 
 class Board:
-    def __init__(self, width, height, screen, difficulty,board):
-        self.width = width
-        self.height = height
+    def __init__(self, row, cols, screen, difficulty,board):
+        self.row = row
+        self.cols = cols
         self.screen = screen
         self.difficulty = difficulty
-        self.cells = [[Cell(0, i, j, screen) for j in range(width)] for i in range(height)]
+        self.cells = [[Cell(0, i, j, screen) for j in range(row)] for i in range(cols)]
         self.selected_cell = None
         self.board = board
         self.board_rows = len(self.board)
@@ -183,17 +183,27 @@ class Board:
                     return False
         return True
 
+    def check_box(self, start_row, start_col):
+        seen = set()
+        for i in range(start_row, start_row + self.box_rows):
+            for j in range(start_col, start_col + self.box_cols):
+                value = self.board[i][j]
+                if value == 0:
+                    continue  # Skip empty cells
+                if value in seen:
+                    return False  # Duplicate value found in the box
+                seen.add(value)
+        return True
     def check_board(self):
         # Check rows and columns
         for i in range(self.board_rows):
             if not self.check_row(i) or not self.check_col(i):
                 return False
-        return True
 
         # Check boxes
-        for row in range(0, self.row_length, self.box_length):
-            for col in range(0, self.row_length, self.box_length):
-                if not self.check_box(row, col):
+        for row in range(0, self.board_rows, self.board_cols):
+            for col in range(0, self.board_rows, self.board_cols):
+                if not self.check_box(row,col):
                     return False
 
         return True
@@ -241,6 +251,28 @@ class Board:
         self.board = [row[:] for row in original_values]
         return self.board
 
+    def check_row(self, row):
+        # Check if the values in the given row are unique and within the valid range
+        seen = set()
+        for value in self.board[row]:
+            if value == 0:
+                continue  # Skip empty cells
+            if value in seen:
+                return False  # Duplicate value found in the row
+            seen.add(value)
+        return True
+
+    def check_col(self, col):
+        # Check if the values in the given column are unique and within the valid range
+        seen = set()
+        for i in range(len(self.board)):
+            value = self.board[i][col]
+            if value == 0:
+                continue  # Skip empty cells
+            if value in seen:
+                return False  # Duplicate value found in the column
+            seen.add(value)
+        return True
     def is_full(self):
         # Check rows
         for row in range(self.board_rows):
