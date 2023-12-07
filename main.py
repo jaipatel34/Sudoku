@@ -156,12 +156,26 @@ def game_over_screen():
 
         pygame.display.update()
 
+def draw_game_screen(win, board_instance, selected_cell, sketch_mode, selected_number, game_buttons):
+    win.fill(BACKGROUND_COLOR)
+
+    if board_instance.is_complete() and board_instance.check_board():
+        if board_instance.is_full():
+            game_won_screen(win)
+        else:
+            game_over_screen(win)
+    else:
+        draw_title(win)
+        draw_grid(win, board_instance, selected_cell, sketch_mode, selected_number)
+        draw_buttons(win, game_buttons)
 def main():
 
-    global selected_difficulty, selected_cell, selected_number, game_over, sudoku, initial_board
+    global selected_difficulty, selected_cell, selected_number, game_over, sudoku, initial_board, board_instance
     pygame.init()
     win = pygame.display.set_mode((WIDTH, WIDTH))
     pygame.display.set_caption('Sudoku')
+    board_instance = Board(width=9, height=9, screen=1, difficulty="hard", board=[[0]*9 for _ in range(9)])
+
 
     start_screen_buttons = [
         DifficultyButton("Easy", pygame.Rect(200, 200, 150, 50), (0,100,255), (220, 215)),
@@ -240,7 +254,7 @@ def main():
                         if button.rect.collidepoint(pos):
                             selected_difficulty = button.text
                             size = 9
-                            removed = 30
+                            removed = 1
                             if selected_difficulty == "Medium":
                                 removed = 40
                             elif selected_difficulty == "Hard":
@@ -271,9 +285,16 @@ def main():
 
         if selected_difficulty:
             win.fill(BACKGROUND_COLOR)
-            draw_title(win)  # Draw the title
-            draw_grid(win, sudoku, selected_cell, sketch_mode, selected_number)
-            draw_buttons(win, game_screen_buttons)
+            #sudoku.get_board()
+            if event.type==pygame.KEYDOWN:
+                if board_instance.is_full() and event.key==pygame.K_RETURN:
+                    game_won_screen()
+                else:
+                    game_over_screen()
+            else:
+                draw_title(win)  # Draw the title
+                draw_grid(win, sudoku, selected_cell, sketch_mode, selected_number)
+                draw_buttons(win, game_screen_buttons)
         else:
             win.fill(BACKGROUND_COLOR)
             draw_title(win)  # Draw the title

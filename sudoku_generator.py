@@ -147,20 +147,19 @@ class Cell:
         elif self.sketched_value != 0:
             text = font.render(str(self.sketched_value), True, (128, 128, 128))
             self.screen.blit(text, (x + 5, y + 5))
-    # def sketch(self, value):
-    #     for row in range(self.board_row):
+
 
 class Board:
-    def __init__(self, width, height, screen, difficulty, sudoku_board):
+    def __init__(self, width, height, screen, difficulty,board):
         self.width = width
         self.height = height
         self.screen = screen
         self.difficulty = difficulty
         self.cells = [[Cell(0, i, j, screen) for j in range(width)] for i in range(height)]
         self.selected_cell = None
-        # self.board = sudoku_board
-        # self.board_row = len(self.board)
-        # self.board_col =
+        self.board = board
+        self.board_rows = len(self.board)
+        self.board_cols = len(self.board[0])
 
     def draw(self):
         cell_size = 50
@@ -185,9 +184,10 @@ class Board:
 
     def check_board(self):
         # Check rows and columns
-        for i in range(self.row_length):
+        for i in range(self.board_rows):
             if not self.check_row(i) or not self.check_col(i):
                 return False
+        return True
 
         # Check boxes
         for row in range(0, self.row_length, self.box_length):
@@ -197,7 +197,67 @@ class Board:
 
         return True
 
+    def select(self, row, col):
+        self.selected_cell = (row, col)
 
+    def click(self, x, y):
+        # Calculate the row and column based on coordinates
+        row = y // cell_size
+        col = x // cell_size
+
+        if 0 <= row < self.size and 0 <= col < self.size:
+            return row, col
+        else:
+            return None
+
+    def clear(self):
+        if self.selected_cell:
+            row, col = self.selected_cell
+            self.board[row][col] = 0
+
+    def sketch(self, value):
+        if self.selected_cell:
+            row, col = self.selected_cell
+            self.board[row][col] = value
+
+    def place_number(self, value):
+        if self.selected_cell:
+            row, col = self.selected_cell
+            self.board[row][col] = value
+
+    def reset_to_original(self):
+
+        original_values = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
+                           [6, 0, 0, 1, 9, 5, 0, 0, 0],
+                           [0, 9, 8, 0, 0, 0, 0, 6, 0],
+                           [8, 0, 0, 0, 6, 0, 0, 0, 3],
+                           [4, 0, 0, 8, 0, 3, 0, 0, 1],
+                           [7, 0, 0, 0, 2, 0, 0, 0, 6],
+                           [0, 6, 0, 0, 0, 0, 2, 8, 0],
+                           [0, 0, 0, 4, 1, 9, 0, 0, 5],
+                           [0, 0, 0, 0, 8, 0, 0, 7, 9]]
+
+        self.board = [row[:] for row in original_values]
+        return self.board
+
+    def is_full(self):
+        # Check rows
+        for row in range(self.board_rows):
+            for col in range(self.board_cols):
+                if self.cells[col][row]==0:
+                    return False
+        return True
+
+    def update_board(self):
+        # Not sure what the update would be in this case, but you can define it
+        pass
+
+    def find_empty(self):
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.board[i][j] == 0:
+                    return i, j
+        return None
 def generate_sudoku(size, removed):
     sudoku = SudokuGenerator(size, removed)
     sudoku.fill_values()
