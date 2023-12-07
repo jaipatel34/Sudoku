@@ -159,19 +159,29 @@ class is_correct_instance():
         self.board = board
         self.board_rows = len(self.board)
         self.board_cols = len(self.board[0])
-    def check_row(row):
+    def check_board(self):
+        for i in range(len(self.board)):
+            if not self.check_row(i) or not self.check_col(i):
+                return False
+        return True
+
+    def check_row(self, row):
         seen = set()
-        for value in row:
-            if value == 0 or value in seen:
+        for value in self.board[row]:
+            if value == 0:
+                continue
+            if value in seen:
                 return False
             seen.add(value)
         return True
 
-    def check_col(board, col):
+    def check_col(self, col):
         seen = set()
-        for row in board:
-            value = row[col]
-            if value == 0 or value in seen:
+        for i in range(len(self.board)):
+            value = self.board[i][col]
+            if value == 0:
+                continue
+            if value in seen:
                 return False
             seen.add(value)
         return True
@@ -186,17 +196,7 @@ class is_correct_instance():
                 seen.add(value)
         return True
 
-    def check_board(board):
-        for i in range(9):
-            if not check_row(board[i]) or not check_col(board, i):
-                return False
 
-        for start_row in range(0, 9, 3):
-            for start_col in range(0, 9, 3):
-                if not check_box(board, start_row, start_col):
-                    return False
-
-        return True
 class Board:
     def __init__(self, row, cols, screen, difficulty,board):
         self.row = row
