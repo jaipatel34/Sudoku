@@ -188,10 +188,8 @@ class Board:
         for i in range(start_row, start_row + self.box_rows):
             for j in range(start_col, start_col + self.box_cols):
                 value = self.board[i][j]
-                if value == 0:
-                    continue  # Skip empty cells
-                if value in seen:
-                    return False  # Duplicate value found in the box
+                if value == 0 or value in seen:
+                    return False  # If the value is 0 or a duplicate is found in the box
                 seen.add(value)
         return True
     def check_board(self):

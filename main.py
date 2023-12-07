@@ -286,7 +286,7 @@ def main():
         if selected_difficulty:
             win.fill(BACKGROUND_COLOR)
             if event.type==pygame.KEYDOWN and event.key==pygame.K_RETURN:
-                if board_instance.is_full():
+                if board_instance.is_full() and board_instance.check_board():
                     game_won_screen()
                 else:
                     game_over_screen()
