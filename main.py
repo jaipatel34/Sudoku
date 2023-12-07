@@ -175,6 +175,7 @@ def main():
     win = pygame.display.set_mode((WIDTH, WIDTH))
     pygame.display.set_caption('Sudoku')
     board_instance = Board(row=9, cols=9, screen=1, difficulty="hard", board=[[0]*9 for _ in range(9)])
+    correct_instance= is_correct_instance(row=9, cols=9, screen=1, difficulty="hard", board=[[0]*9 for _ in range(9)])
 
 
     start_screen_buttons = [
@@ -286,7 +287,7 @@ def main():
         if selected_difficulty:
             win.fill(BACKGROUND_COLOR)
             if event.type==pygame.KEYDOWN and event.key==pygame.K_RETURN:
-                if board_instance.is_full() and board_instance.check_board():
+                if board_instance.is_full() and correct_instance.check_board():
                     game_won_screen()
                 else:
                     game_over_screen()

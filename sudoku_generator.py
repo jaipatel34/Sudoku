@@ -148,7 +148,55 @@ class Cell:
             text = font.render(str(self.sketched_value), True, (128, 128, 128))
             self.screen.blit(text, (x + 5, y + 5))
 
+class is_correct_instance():
+    def __init__(self, row, cols, screen, difficulty,board):
+        self.row = row
+        self.cols = cols
+        self.screen = screen
+        self.difficulty = difficulty
+        self.cells = [[Cell(0, i, j, screen) for j in range(row)] for i in range(cols)]
+        self.selected_cell = None
+        self.board = board
+        self.board_rows = len(self.board)
+        self.board_cols = len(self.board[0])
+    def check_row(row):
+        seen = set()
+        for value in row:
+            if value == 0 or value in seen:
+                return False
+            seen.add(value)
+        return True
 
+    def check_col(board, col):
+        seen = set()
+        for row in board:
+            value = row[col]
+            if value == 0 or value in seen:
+                return False
+            seen.add(value)
+        return True
+
+    def check_box(board, start_row, start_col):
+        seen = set()
+        for i in range(start_row, start_row + 3):
+            for j in range(start_col, start_col + 3):
+                value = board[i][j]
+                if value == 0 or value in seen:
+                    return False
+                seen.add(value)
+        return True
+
+    def check_board(board):
+        for i in range(9):
+            if not check_row(board[i]) or not check_col(board, i):
+                return False
+
+        for start_row in range(0, 9, 3):
+            for start_col in range(0, 9, 3):
+                if not check_box(board, start_row, start_col):
+                    return False
+
+        return True
 class Board:
     def __init__(self, row, cols, screen, difficulty,board):
         self.row = row
@@ -160,6 +208,7 @@ class Board:
         self.board = board
         self.board_rows = len(self.board)
         self.board_cols = len(self.board[0])
+
 
     def draw(self):
         cell_size = 50
@@ -183,28 +232,8 @@ class Board:
                     return False
         return True
 
-    def check_box(self, start_row, start_col):
-        seen = set()
-        for i in range(start_row, start_row + self.box_rows):
-            for j in range(start_col, start_col + self.box_cols):
-                value = self.board[i][j]
-                if value == 0 or value in seen:
-                    return False  # If the value is 0 or a duplicate is found in the box
-                seen.add(value)
-        return True
-    def check_board(self):
-        # Check rows and columns
-        for i in range(self.board_rows):
-            if not self.check_row(i) or not self.check_col(i):
-                return False
 
-        # Check boxes
-        for row in range(0, self.board_rows, self.board_cols):
-            for col in range(0, self.board_rows, self.board_cols):
-                if not self.check_box(row,col):
-                    return False
 
-        return True
 
     def select(self, row, col):
         self.selected_cell = (row, col)
@@ -249,28 +278,7 @@ class Board:
         self.board = [row[:] for row in original_values]
         return self.board
 
-    def check_row(self, row):
-        # Check if the values in the given row are unique and within the valid range
-        seen = set()
-        for value in self.board[row]:
-            if value == 0:
-                continue  # Skip empty cells
-            if value in seen:
-                return False  # Duplicate value found in the row
-            seen.add(value)
-        return True
 
-    def check_col(self, col):
-        # Check if the values in the given column are unique and within the valid range
-        seen = set()
-        for i in range(len(self.board)):
-            value = self.board[i][col]
-            if value == 0:
-                continue  # Skip empty cells
-            if value in seen:
-                return False  # Duplicate value found in the column
-            seen.add(value)
-        return True
     def is_full(self):
         # Check rows
         for row in range(self.board_rows):
