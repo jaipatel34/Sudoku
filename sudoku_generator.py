@@ -149,16 +149,11 @@ class Cell:
             self.screen.blit(text, (x + 5, y + 5))
 
 class is_correct_instance():
-    def __init__(self, row, cols, screen, difficulty,board):
-        self.row = row
-        self.cols = cols
-        self.screen = screen
-        self.difficulty = difficulty
-        self.cells = [[Cell(0, i, j, screen) for j in range(row)] for i in range(cols)]
-        self.selected_cell = None
-        self.board = board
-        self.board_rows = len(self.board)
-        self.board_cols = len(self.board[0])
+    def __init__(self,board):
+        self.board= board
+
+    def get_board(self):
+        return self.board
     def check_board(self):
         for i in range(len(self.board)):
             if not self.check_row(i) or not self.check_col(i):

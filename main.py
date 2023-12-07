@@ -177,7 +177,7 @@ def main():
     win = pygame.display.set_mode((WIDTH, WIDTH))
     pygame.display.set_caption('Sudoku')
     board_instance = Board(row=9, cols=9, screen=1, difficulty="hard", board=[[0]*9 for _ in range(9)])
-    correct_instance= is_correct_instance(row=9, cols=9, screen=1, difficulty="hard", board=[[0]*9 for _ in range(9)])
+    correct_instance= is_correct_instance(board=[[0]*9 for _ in range(9)])
 
 
     start_screen_buttons = [
@@ -290,10 +290,11 @@ def main():
             win.fill(BACKGROUND_COLOR)
             if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                 # Assuming correct_instance is an instance of the Board class
-                if board_instance.is_full() and sudoku.get_board() == correct_instance.check_board():
-                    game_won_screen()
-                else:
-                    game_over_screen()
+                if board_instance.is_full():
+                    if sudoku.get_board() == initial_board:
+                        game_won_screen()
+                    else:
+                        game_over_screen()
 
             else:
                 draw_title(win)  # Draw the title
